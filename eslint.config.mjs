@@ -5,7 +5,7 @@ import tseslint from 'typescript-eslint';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   { files: ['**/*.{js,mjs,cjs,ts}'] },
-  { languageOptions: { globals: globals.node, process: 'readonly' } },
+  { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -17,8 +17,5 @@ export default [
       'no-console': 'warn',
       'no-undef': 'error',
     },
-  },
-  {
-    extends: ['eslint-config-prettier'], // Add Prettier here
   },
 ];
