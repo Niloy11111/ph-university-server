@@ -11,7 +11,7 @@
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:prod": "node ./dist/server.js",
     "test": "node src/test.js",
-    "commit": "sh -c 'git add . && git commit -m \"$*\" && git push'"
+    "commit": "git add . && git commit -m \"%npm_config_msg%\" && git push"
   },
   "keywords": [],
   "author": "",
