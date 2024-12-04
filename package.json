@@ -10,7 +10,8 @@
     "format": "prettier . --write",
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:prod": "node ./dist/server.js",
-    "test": "node src/test.js"
+    "test": "node src/test.js",
+    "commit": "git add . && git commit -m 'edited' && git push"
   },
   "keywords": [],
   "author": "",

@@ -7,7 +7,6 @@ import {
 import { TAcademicSemester } from './academicSemister.interface';
 
 const academicSemesterSchema = new Schema<TAcademicSemester>(
-  // vaiya TAcademicSemesterCode import kore pelse video 12.7 a
   {
     name: {
       type: String,
@@ -38,6 +37,18 @@ const academicSemesterSchema = new Schema<TAcademicSemester>(
     timestamps: true,
   },
 );
+
+// Note : here this next is not express next we generally work.this is mongoose next
+academicSemesterSchema.pre('save', async function (next) {
+  const isSemesterExists = await AcademicSemester.findOne({
+    year: this.year,
+    name: this.name,
+  });
+  if (isSemesterExists) {
+    throw new Error('Semester is already exists');
+  }
+  next();
+});
 
 export const AcademicSemester = model<TAcademicSemester>(
   'AcademicSemester',
