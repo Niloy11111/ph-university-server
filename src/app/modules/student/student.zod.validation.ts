@@ -35,27 +35,30 @@ const localGuardianValidationSchema = z.object({
 });
 
 // Student Schema
-const studentValidationSchema = z.object({
-  id: z.string(),
-  password: z.string().max(20),
-  name: userNameValidationSchema,
-  gender: z.enum(['male', 'female', 'other'], {
-    errorMap: () => ({ message: 'Gender is not valid' }),
+const createStudentValidationSchema = z.object({
+  body: z.object({
+    password: z.string().max(20),
+    student: z.object({
+      name: userNameValidationSchema,
+      gender: z.enum(['male', 'female', 'other'], {
+        errorMap: () => ({ message: 'Gender is not valid' }),
+      }),
+      dateOfBirth: z.date().optional(),
+      email: z.string().email('Email is not valid'),
+      contactNo: z.string(),
+      emergencyContact: z.string(),
+      bloodGroup: z
+        .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
+        .optional(),
+      presentAddress: z.string(),
+      paremenentAddress: z.string(),
+      guardian: guardianValidationSchema,
+      localGuardian: localGuardianValidationSchema,
+      profileImg: z.string().optional(),
+    }),
   }),
-  dateOfBirth: z.string().optional(),
-  email: z.string().email('Email is not valid'),
-  contactNo: z.string(),
-  emergencyContact: z.string(),
-  bloodGroup: z
-    .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
-    .optional(),
-  presentAddress: z.string(),
-  paremenentAddress: z.string(),
-  guardian: guardianValidationSchema,
-  localGuardian: localGuardianValidationSchema,
-  profileImg: z.string().optional(),
-  isActive: z.enum(['active', 'block']).default('active'),
-  isDeleted: z.boolean(),
 });
 
-export default studentValidationSchema;
+export const studentValidations = {
+  createStudentValidationSchema,
+};

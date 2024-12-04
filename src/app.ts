@@ -9,6 +9,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
+//importing router from routes/index.ts
 app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {

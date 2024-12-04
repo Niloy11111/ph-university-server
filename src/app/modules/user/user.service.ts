@@ -5,9 +5,6 @@ import { TUser } from './user.interface';
 import { User } from './user.model';
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
-  // if (await Student.isUserExists(studentData.id)) {
-  //   throw new Error('User already exists');
-  // }
   //create a user object
   const userData: Partial<TUser> = {};
 
@@ -32,12 +29,6 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
     const newStudent = await Student.create(studentData);
     return newStudent;
   }
-
-  // const student = new Student(studentData); // create an instance
-  // if (await student.isUserExists(studentData.id)) {
-  //   throw new Error('User already exists');
-  // }
-  // const result = await student.save(); //built in instance method
 };
 
 export const UserService = {

@@ -1,18 +1,13 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
+import validateRequest from '../../middleware/validateRequest';
+import { studentValidations } from '../student/student.zod.validation';
 import { UserControllers } from './user.controller';
 
 const router = express.Router();
 
-const validateRequest = (name) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    //validation
-    // next();
-  };
-};
-
 router.post(
   '/create-student',
-  validateRequest('validateRequest'),
+  validateRequest(studentValidations.createStudentValidationSchema),
   UserControllers.createStudent,
 );
 
