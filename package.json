@@ -11,8 +11,7 @@
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:prod": "node ./dist/server.js",
     "test": "node src/test.js",
-    "hello": "ksdjf",
-    "commit": "sh -c 'git add . && git commit -m \"$1\" && git push' --"
+    "commit": "sh -c 'git add . && git commit -m \"$*\" && git push'"
   },
   "keywords": [],
   "author": "",

@@ -5,6 +5,7 @@ import notFound from './app/middleware/notFound';
 import router from './app/routes';
 const app: Application = express();
 
+const a = 5;
 //parser
 //parser
 //parser
