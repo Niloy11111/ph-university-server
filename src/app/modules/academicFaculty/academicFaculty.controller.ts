@@ -50,7 +50,7 @@ const updateAcademicFaculty = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Faculty is retireved successfully',
+    message: 'Academic Faculty is updated successfully',
     data: result,
   });
 });
