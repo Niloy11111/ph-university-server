@@ -3,20 +3,9 @@ import express, { Application, Request, Response } from 'express';
 import globalErrorHanler from './app/middleware/globalErrorHandler';
 import notFound from './app/middleware/notFound';
 import router from './app/routes';
+
 const app: Application = express();
 
-const a = 5;
-//parser
-//parser
-//parser
-//parser
-//parser
-//parser
-//parser
-//parser
-//parser
-//parser
-//parser
 app.use(express.json());
 app.use(cors());
 
