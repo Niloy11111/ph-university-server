@@ -33,17 +33,18 @@ academicDepartmentSchema.pre('save', async function (next) {
 });
 
 // query middleware
-academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
-  const query = this.getQuery(); // get the {_id : 289374892343282394324} from update services
 
-  const isDepartmentExist = await AcademicDepartment.findOne(query);
+// academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
+//   const query = this.getQuery(); // get the {_id : 289374892343282394324} from update services
 
-  if (!isDepartmentExist) {
-    // throw new Error('This department does not exist');
-    throw new AppError(httpStatus.NOT_FOUND, 'This department does not exist!');
-  }
-  next();
-});
+//   const isDepartmentExist = await AcademicDepartment.findOne(query);
+
+//   if (!isDepartmentExist) {
+//     // throw new Error('This department does not exist');
+//     throw new AppError(httpStatus.NOT_FOUND, 'This department does not exist!');
+//   }
+//   next();
+// });
 
 export const AcademicDepartment = model<TAcademicDepartment>(
   'AcademicDepartment',
