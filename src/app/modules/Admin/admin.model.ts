@@ -1,7 +1,6 @@
-import { model, Schema } from 'mongoose';
-import { TUserName } from '../student/student.interface';
-import { BloodGroup, Gender } from './faculty.constant';
-import { FacultyModel, TFaculty } from './faculty.interface';
+import { Schema, model } from 'mongoose';
+import { BloodGroup, Gender } from './admin.constant';
+import { AdminModel, TAdmin, TUserName } from './admin.interface';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -22,7 +21,7 @@ const userNameSchema = new Schema<TUserName>({
   },
 });
 
-const facultySchema = new Schema<TFaculty, FacultyModel>(
+const adminSchema = new Schema<TAdmin, AdminModel>(
   {
     id: {
       type: String,
@@ -31,7 +30,7 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
     },
     user: {
       type: Schema.Types.ObjectId,
-      required: [true, 'User ID is required'],
+      required: [true, 'User id is required'],
       unique: true,
       ref: 'User',
     },
@@ -47,7 +46,7 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
       type: String,
       enum: {
         values: Gender,
-        message: `{VALUE} is not a valid gender`,
+        message: '{VALUE} is not a valid gender',
       },
       required: [true, 'Gender is required'],
     },
@@ -57,15 +56,12 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
       required: [true, 'Email is required'],
       unique: true,
     },
-    contactNo: {
-      type: String,
-      required: [true, 'Contact number is required'],
-    },
+    contactNo: { type: String, required: [true, 'Contact number is required'] },
     emergencyContactNo: {
       type: String,
       required: [true, 'Emergency contact number is required'],
     },
-    bloodGroup: {
+    bloogGroup: {
       type: String,
       enum: {
         values: BloodGroup,
@@ -78,14 +74,9 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
     },
     permanentAddress: {
       type: String,
-      requried: [true, 'Parmanent address is required'],
+      required: [true, 'Permanent address is required'],
     },
     profileImg: { type: String },
-    academicDepartment: {
-      type: Schema.Types.ObjectId,
-      requried: [true, 'User is is required'],
-      ref: 'User',
-    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -99,7 +90,7 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
 );
 
 // generating full name
-facultySchema.virtual('fullName').get(function () {
+adminSchema.virtual('fullName').get(function () {
   return (
     this?.name?.firstName +
     '' +
@@ -110,25 +101,25 @@ facultySchema.virtual('fullName').get(function () {
 });
 
 // filter out deleted documents
-facultySchema.pre('find', function (next) {
+adminSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-facultySchema.pre('findOne', function (next) {
+adminSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-facultySchema.pre('aggregate', function (next) {
+adminSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
 
-//checking if user is already exist
-facultySchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await Faculty.findOne({ id });
+//checking if user is already exist!
+adminSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Admin.findOne({ id });
   return existingUser;
 };
 
-export const Faculty = model<TFaculty, FacultyModel>('Faculty', facultySchema);
+export const Admin = model<TAdmin, AdminModel>('Admin', adminSchema);
