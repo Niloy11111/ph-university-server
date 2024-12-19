@@ -186,3 +186,14 @@ export const UserService = {
 };
 
 ```
+
+<!-- video 17-10 and 17-11 is about what ? -->
+<!--
+ when user changed password then we should not give access to use the previously created token.we should create new valid token for that user.this is doing in 10,11 video-
+ note : i can forget thats why i wrote it, i skip fast these 2 videos.
+ to do like Mezba vai -
+ - first: remove all admins,user,students,faculties from DB
+ - second : create a admin and acess a get route
+ - third : update password and see yet you can get that get routes data ,it should not be
+ -- fourth - thats why all the code is done in 10,11 videos
+ -->
