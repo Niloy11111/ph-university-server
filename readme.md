@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #### these are for disconnect to github and disconnect vercel if you are willing to work as a new file
 
 ```javascript
@@ -6,6 +7,9 @@
 ```
 
 #### Module-8 project setup note
+=======
+#### Module-8 project setup note dd
+>>>>>>> 6561ed4e2ef4536474fbf13b5252408f71513d4f
 
 #### First command
 
