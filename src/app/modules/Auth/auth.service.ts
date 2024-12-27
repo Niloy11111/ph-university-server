@@ -6,7 +6,7 @@ import { AppError } from '../../errors/AppError';
 import { sendEmail } from '../../utils/sendEmail';
 import { User } from '../user/user.model';
 import { TLoginUser } from './auth.interface';
-import { createToken } from './auth.utils';
+import { createToken, verifyToken } from './auth.utils';
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistsbyCustomId(payload.id);
 
@@ -115,10 +115,7 @@ const changePassword = async (
 
 const refreshToken = async (token: string) => {
   //if the token is valid
-  const decoded = jwt.verify(
-    token,
-    config.jwt_refresh_secret as string,
-  ) as JwtPayload;
+  const decoded = verifyToken(token, config.jwt_refresh_secret as string);
 
   const { role, userId, iat } = decoded;
 
