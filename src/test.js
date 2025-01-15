@@ -23,3 +23,12 @@ const modifiedUpdatedData = { ...remaining };
 for (const [key, value] of Object.entries(name)) {
   modifiedUpdatedData[`name.${key}`] = value;
 }
+
+const course = {
+  classTest1: 18,
+  midTerm: 45,
+  classTest2: 19,
+  finalTerm: 80,
+};
+
+console.log({ ...course });

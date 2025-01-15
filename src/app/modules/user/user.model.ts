@@ -28,7 +28,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     role: {
       type: String,
-      enum: ['student', 'faculty', 'admin'],
+      enum: ['super-admin', 'student', 'faculty', 'admin'],
     },
     status: {
       type: String,
@@ -51,6 +51,7 @@ userSchema.pre('save', async function (next) {
 
   const user = this;
   //hashing password and save into DB
+  console.log('from user', user.password);
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),

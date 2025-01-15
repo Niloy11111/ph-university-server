@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import config from '../../config';
 import { AppError } from '../../errors/AppError';
+import { sendImageToCloudinary } from '../../utils/sendImageToCloundinary';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { AcademicSemester } from '../academicSemister/academicSemister.model';
 import { Admin } from '../Admin/admin.model';
@@ -16,12 +18,17 @@ import {
   generateFacultyId,
   generateStudentId,
 } from './user.utils';
-const createStudentIntoDB = async (password: string, payload: TStudent) => {
+const createStudentIntoDB = async (
+  file: any,
+  password: string,
+  payload: TStudent,
+) => {
   //create a user object
   const userData: Partial<TUser> = {};
+  console.log('from service', password);
 
   //if password is not given, use default password
-  userData.password = password || (config.default_password as string);
+  userData.password = password;
 
   //set student role
   userData.role = 'student';
@@ -38,6 +45,11 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     // set generated id (transaction -1)
     userData.id = await generateStudentId(admissionSemester);
 
+    const imageName = `${userData.id}${payload?.name}`;
+    const path = file?.path;
+    // send image to cloudinary
+    const { secure_url } = await sendImageToCloudinary(imageName, path);
+
     //create a user , new user now an array and newuser is on array[0] number index
     const newUser = await User.create([userData], { session }); // built in static method
 
@@ -49,6 +61,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     //set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; // reference _id
+    payload.profileImg = secure_url;
 
     // create a student (transaction -2)
     const newStudent = await Student.create([payload], { session });
