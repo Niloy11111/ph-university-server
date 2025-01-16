@@ -1,19 +1,128 @@
-<<<<<<< HEAD
+### How to use this project to create APIS
+
+### Faculty -> Academic Department
+
+```javascript
+ph-local-url="http://localhost:5000/api/v1"
+step1 --> create academic faculty by superAdmin
+** body = {
+    "name" : "Faculty of Programming"
+}
+** Headers.Authorization = superAdmin Login Token
+
+step2 --> create academic faculty by super Admin
+url --> {{ph-local-url}}/academic-departments/create-academic-department
+** body = {
+    "name" : "Department of Phitron",
+    "academicFaculty" : "6787fadd0d054d01a10ac09f" // any academic faculty objectID
+}
+** Headers.Authorization = superAdmin Login Token
+
+step3 --> create academic semester by super Admin
+url --> {{ph-local-url}}/academic-semesters/create-academic-semester
+** body = {
+  "name": "Autumn",
+  "code": "01",
+  "year": "2025",
+  "startMonth": "January",
+  "endMonth": "July"
+}
+
+=> to create another semester
+** body = {
+  "name": "Fall",
+  "code": "03",
+  "year": "2025",
+  "startMonth": "July",
+  "endMonth": "December"
+}
+** Headers.Authorization = Does not need
+
+step4 --> create Student
+url --> {{ph-local-url}}/users/create-student
+** form-data -> file = a picture from computer
+** form-data -> data = {
+    "password" : "student123",
+    "student" : {
+  "id": "S12345",
+  "name": {
+    "firstName": "Student1",
+    "middleName": "A",
+    "lastName": "Good"
+  },
+  "gender": "male",
+  "dateOfBirth": "2000-05-15T00:00:00.000Z",
+  "email": "student1@gmail.com",
+  "contactNo": "+1234567890",
+  "emergencyContact": "+0987654321",
+  "bloodGroup": "O+",
+  "presentAddress": "123 Present St, Cityville",
+  "paremenentAddress": "456 Permanent Rd, Townsville",
+  "guardian": {
+    "fatherName": "Richard Doe",
+    "fatherOccupation": "Engineer",
+    "fatherContactNo": "+1234567891",
+    "motherName": "Jane Doe",
+    "motherOccupation": "Doctor",
+    "motherContactNo": "+1234567892"
+  },
+  "localGuardian": {
+    "name": "Uncle Sam",
+    "occupation": "Businessman",
+    "contactNo": "+1234567893",
+    "address": "789 Guardian Lane, Villagetown"
+  },
+  "admissionSemester": "678806d70d054d01a10ac0aa",// any admission semester objectID
+  "isDeleted": false,
+  "academicDepartment": "6787fcd10d054d01a10ac0a7"// any academic department objectID
+}
+}
+** Headers.Authorization = superAdmin Login Token
+
+step5 --> create a Faculty [Teacher]
+url --> {{ph-local-url}}/users/create-faculty
+** form-data -> file = a picture from computer
+** form-data -> data = {
+  "password" : "faculty123",
+  "faculty" : {
+  "designation": "Professor",
+  "name": {
+    "firstName": "Faculty1",
+    "middleName": "A.",
+    "lastName": "Doe"
+  },
+  "gender": "male",
+  "dateOfBirth": "1980-05-15",
+  "email": "faculty1@gmail.com",
+  "contactNo": "1234567890",
+  "emergencyContactNo": "0987654321",
+  "bloodGroup": "O+",
+  "presentAddress": "123 Main Street, Cityville",
+  "permanentAddress": "456 Elm Street, Townsville",
+  "academicDepartment": "6787fcd10d054d01a10ac0a7", // any academic department objectID
+  "isDeleted": false
+  }
+}
+
+** Headers.Authorization = superAdmin Login Token
+
+```
+
+````
+
 
 #### these are for disconnect to github and disconnect vercel if you are willing to work as a new file
 
 ```javascript
 ### rm -rf .git
 ### rm -rf .vercel
-```
+````
 
 #### Module-8 project setup note
 
 =======
 
 #### Module-8 project setup note dd
-
-> > > > > > > 6561ed4e2ef4536474fbf13b5252408f71513d4f
 
 #### First command
 
