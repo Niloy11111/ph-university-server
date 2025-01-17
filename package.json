@@ -11,7 +11,7 @@
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:prod": "node ./dist/server.js",
     "test": "node src/test.js",
-    "commit": "git add . && git commit -m \"Made image option to create student,faculty,admin and written well documented blog in readme.md file to understand the project perfectly\" && git push"
+    "commit": "git add . && git commit -m \"Made students enrolled system in a more organizable way\" && git push"
   },
   "keywords": [],
   "author": "",

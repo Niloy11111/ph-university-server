@@ -25,17 +25,26 @@ url --> {{ph-local-url}}/academic-semesters/create-academic-semester
   "code": "01",
   "year": "2025",
   "startMonth": "January",
-  "endMonth": "July"
+  "endMonth": "April"
 }
 
 => to create another semester
 ** body = {
+  "name": "Summer",
+  "code": "02",
+  "year": "2025",
+  "startMonth": "May",
+  "endMonth": "August"
+}
+=> to create another semester
+** body ={
   "name": "Fall",
   "code": "03",
   "year": "2025",
-  "startMonth": "July",
+  "startMonth": "September",
   "endMonth": "December"
 }
+
 ** Headers.Authorization = Does not need
 
 step4 --> create Student
@@ -103,20 +112,196 @@ url --> {{ph-local-url}}/users/create-faculty
   "isDeleted": false
   }
 }
-
 ** Headers.Authorization = superAdmin Login Token
+
+step6 --> create a Admin by superAdmin (yet all was handled by superAdmin ,now admin is creating)
+url --> {{ph-local-url}}/users/create-admin
+** form-data -> file = a picture from computer
+** form-data -> data = {
+    "password" : "admin123",
+    "admin" : {
+  "designation": "Admin",
+  "name": {
+    "firstName": "Jhankar",
+    "middleName": "",
+    "lastName": "Mahbub"
+  },
+  "gender": "male",
+  "dateOfBirth": "1985-06-15",
+  "email": "jhankar@example.com",
+  "contactNo": "+1234567890",
+  "emergencyContactNo": "+0987654321",
+  "bloogGroup": "O+",
+  "presentAddress": "123 Main St, Springfield, USA",
+  "permanentAddress": "456 Elm St, Springfield, USA",
+
+  "isDeleted": false
+}
+}
+** Headers.Authorization = superAdmin Login Token
+
+step7 --> create course by Admin
+url -->{{ph-local-url}}/courses/create-course
+** body = {
+    "title" : "BASIC Computer Skill",
+    "prefix" : "BASIC",
+    "code" : 100,
+    "credits" : 3,
+    "isDeleted" : false
+}
+## create 2nd course with prerequisite
+** body = {
+    "title" : "Hyper Text Markup Language",
+    "prefix" : "HTML",
+    "code" : 101,
+    "credits" : 3,
+    "isDeleted" : false,
+    "preRequisiteCourses" : [
+        {
+            "course" : "6788d0387639ed5d11c31aa7",//this is BASIC course objectID
+            "isDeleted" : false
+        }
+    ]
+}
+## create 3rd course with prerequisite
+** body = {
+    "title" : "Cascading Style Sheet",
+    "prefix" : "CSS",
+    "code" : 102,
+    "credits" : 3,
+    "isDeleted" : false,
+    "preRequisiteCourses" : [
+        {
+            "course" : "6788d1357639ed5d11c31aab",//this is html objectID
+            "isDeleted" : false
+        }
+    ]
+}
+
+** Headers.Authorization = just Admin Login Token
+
+## create Basic JavaScript as 4th course to create two preRequsiteCourse
+
+## now create Problem Solving with JS course with Basic JavaScript Prerequisite as 5th course to create two preRequsiteCourse course
+
+## create the two prerequisite Dom manipulation course as 6th course
+** body = ## create 3rd course with prerequisite
+** body = {
+    "title" : "Dom Manipulation",
+    "prefix" : "JS",
+    "code" : 108,
+    "credits" : 3,
+    "isDeleted" : false,
+     "preRequisiteCourses" : [
+        {
+            "course" : "6788d1d37639ed5d11c31aaf",//css
+            "isDeleted" : false
+        },
+        {
+            "course" : "6788d3547639ed5d11c31ab6",//povlem solving js
+            "isDeleted" : false
+        }
+    ]
+
+}
+
+##** Now we need to create semesterRegistration in order to offer course
+** url = {{ph-local-url}}/semester-registrations/create-semester-registration
+** body = {
+  "academicSemester": "678806d70d054d01a10ac0aa",
+  "status": "UPCOMING",
+ "startDate": "2025-01-01T00:00:00.000Z",
+  "endDate": "2025-04-30T23:59:59.999Z",
+  "minCredit": 3,
+  "maxCredit": 16
+}
+##** Now update semesterRegistration to move status from UPCOMING to ONGOING
+** url = {{ph-local-url}}/semester-registrations/678a350fb4b83ee41574000a
+
+** body = {
+    "status" : "ONGOING"
+}
+##** Now to asssign faculties(meaning teacher)
+
+** url = {{ph-local-url}}/courses/6788d0387639ed5d11c31aa7/assign-faculties // this is course _id
+
+** body = {
+    "faculties" : ["6788c008384cc31a6d2d6971", "6788c0b0384cc31a6d2d6979"]
+}
+
+Response will be : {
+    "success": true,
+    "message": "faculties assigns successfully",
+    "data": {
+        "_id": "6788d0387639ed5d11c31aa7",
+        "__v": 0,
+        "course": "6788d0387639ed5d11c31aa7",
+        "faculties": [
+            "6788c008384cc31a6d2d6971",
+            "6788c0b0384cc31a6d2d6979"
+        ]
+    }
+} // a courseFaculties collection is created , this means the course class will be takend by these two faculties
+
+## Now you can getFaculties by this
+** url = {{ph-local-url}}/courses/6788d0387639ed5d11c31aa7/get-faculties // here the id is a course field id from courseFaculty collection
+
+
+## Now you can offere course for students
+** url = {{ph-local-url}}/offered-courses/create-offered-course
+** body = {
+  "semesterRegistration": "678a350fb4b83ee41574000a",// a semester registration _id
+  "academicFaculty": "6787fae70d054d01a10ac0a2", // a academic faculties _id
+  "academicDepartment": "6787fcd10d054d01a10ac0a7", // need to find the Academic department _id of this 6787fae70d054d01a10ac0a2 academic faculties id
+  "course": "6788d0387639ed5d11c31aa7",
+  "faculty": "6788c008384cc31a6d2d6971",
+  "section": 1,
+  "maxCapacity": 30,
+  "days": ["Sun", "Tue"],
+  "startTime": "10:30",
+  "endTime": "12:30"
+}
 
 ```
 
-````
+```javascript
+##** Now to asssign faculties(meaning teacher) again for HTML
 
+** url = {{ph-local-url}}/courses/6788d1357639ed5d11c31aab/assign-faculties // this is course _id
+
+## do assign faculties for all course like css,basic js,problem solving
+
+### Create another offered course
+** body = {
+  "semesterRegistration": "678a350fb4b83ee41574000a",// a semester registration _id
+  "academicFaculty": "6787fae70d054d01a10ac0a2", // a academic faculties _id
+  "academicDepartment": "6787fcd10d054d01a10ac0a7", // need to find the 6787fae70d054d01a10ac0a2 academic faculties Academic department _id
+  "course": "6788d1357639ed5d11c31aab", // here just changed this course and the time ,because the first one also this faculty(teacher)
+  "faculty": "6788c008384cc31a6d2d6971",
+  "section": 1,
+  "maxCapacity": 30,
+  "days": ["Sun", "Tue"],
+  "startTime": "12:30",
+  "endTime": "14:30"
+}
+## do again create offer course for basic JavaScript,Problem solving and dom manipulation course  and if faculty same then change the time.
+
+
+## Now a student can enroll to his faculty and academicDepartement ONGOING  semester.
+** to enroll
+url = {{ph-local-url}}/enrolled-courses/create-enrolled-course
+** body = {
+    "offeredCourse" : "678a4a03c3a574a3f1e741ba" // is a students myOfferedCourse ObjectId
+}
+
+```
 
 #### these are for disconnect to github and disconnect vercel if you are willing to work as a new file
 
 ```javascript
 ### rm -rf .git
 ### rm -rf .vercel
-````
+```
 
 #### Module-8 project setup note
 
