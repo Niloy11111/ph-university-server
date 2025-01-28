@@ -46,8 +46,8 @@ academicSemesterSchema.pre('save', async function (next) {
     name: this.name,
   });
   if (isSemesterExists) {
-    // throw new Error('Semester is already exists');
-    throw new AppError(httpStatus.NOT_FOUND, 'This department does not exist!');
+    // throw new Error('sSemester is already exits');
+    throw new AppError(httpStatus.NOT_FOUND, 'This Semester is already exits!');
   }
   next();
 });
